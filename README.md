@@ -3,21 +3,16 @@
 
 #source code
 
-#include<iostream>
+include<iostream>
 using namespace std;
-
-
 int autoid=1000000; //자동 계좌번호를 삽입하기위에 전역변수 정의 
-
 class Account //계좌 정보 클래스 정의
 {
 protected:  //상속받은 클래스들은 허용
  int id;    //계좌번호
  char *name ; //계좌주
  double balance;//잔액
- 
 public:
-
  Account(char *name, double balance);//생성자
  Account(const Account &c);//복사 생성자
  ~Account();// 소멸자
@@ -39,8 +34,6 @@ Account::Account(char *name, double balance=0) //생성자 잔액을 입력안�
   else
    this->balance=balance; //정상 잔액 입력(양수)
 }
- 
-
  Account::Account(const Account &c) //복사 생성자     ->const 지정
  {
   this->id=autoid;//계좌번호 삽입
@@ -51,27 +44,21 @@ Account::Account(char *name, double balance=0) //생성자 잔액을 입력안�
   else
    this->balance=c.balance; //정상 잔액 입력(양수)
  }
-
-
  Account::~Account()//소멸자
  {
   delete[] name;//계좌주 동적 메모리 소멸
  }
- 
  const int Account::getid() const //id 리턴     -> 계좌번호는 바꿀 필요가 없으므로 const화
  {
   return id;
  }
- 
  const char* Account::getname() const//이름 리턴  -> 이름은 수정할 필요 없으므로  const화
  {
   return name;
  }
- 
  int Account::getbalance(){//잔액 리턴
   return balance;
  }
-
  void Account::deposit(const double money) //입금 ->money의 값 변경 필요 없다.
  {
   if(money<=0) //에러처리
@@ -80,7 +67,6 @@ Account::Account(char *name, double balance=0) //생성자 잔액을 입력안�
    balance = balance + money; //잔액에 입금액 더한다.
       cout<<name <<" 계좌에 " <<money<<"원 입금이 완료되었습니다."<< endl ;
   }
-   
  }
  void Account::withdraw(const double money)//출금 ->money변경 불필요
  {
@@ -90,8 +76,6 @@ Account::Account(char *name, double balance=0) //생성자 잔액을 입력안�
    balance = balance - money;//잔액에 출금액 뺀다.
    cout<<money<<" 출금이 완료되었습니다."<< endl ;
   }
-
-
  }
  void Account::enquiry() const  //조회    ->const로 상수화!
  {
@@ -149,18 +133,11 @@ Account::Account(char *name, double balance=0) //생성자 잔액을 입력안�
   }
  } 
 
-
- 
-
 const int MAX = 100;// 관리할 계좌수 지정   -> const로 상수화!
-
- 
-
 class AccManagement  //계좌관리클래스 정의
 {
  Account* a[MAX]; //관리할 계좌들을 담을 맴버변수
  int index;//인덱스
-
 public:
  AccManagement() :index(0){}; //기본생성자 index를 0으로 초기화
  ~AccManagement()
@@ -168,17 +145,12 @@ public:
   for(int i=0;i<index;i++)
    delete a[i];
  }
-         
-
-
  void make(Account* const c)//계좌 추가   -> 객체Account c를 const 지정 
-             
  {
   a[index]=c;
   cout << "계좌가 생성되었습니다."<<endl;
   index++; //index값하나 올려준다.
  }
-
  void print(int id) const //계좌조회-> id로 조회
               //수정할 필요 없으므로 const화  
  {
@@ -195,8 +167,6 @@ public:
   if (temp==0) //못찾으면 출력!!! temp값은 그대로 0
   {cout <<"찾는 계좌가 없습니다."<<endl;}
  }
-    
-
  void print(char *name) const //계좌조회-> 이름으로 조회->같은이름의 계좌는 전부 조회
                //수정할 필요 없으므로 const화  
  {
@@ -213,8 +183,6 @@ public:
   {cout <<"찾는 계좌가 없습니다."<<endl;}
   
  }
- 
- 
  void printall() const // 모든계좌출력    ->수정할 필요없으므로 const지정
  {
   cout<<endl<<endl;
@@ -223,8 +191,6 @@ public:
    a[i]->enquiry();  //순환문으로 전체 생성된 계좌를 출력
   cout<<endl<<endl;
  }
- 
-
  void mgm_deposit(const int id,const double money) //입금 ->계좌번호와 입금액을 인자값으로 받는다.
                                                                       //인자값인 id와 money 수정 불필요        
  {
@@ -239,10 +205,8 @@ public:
    }
   } 
   if (temp==0) //못찾으면 출력한다.
-  {cout <<"계좌가 없어서 입금할 수 없습니다."<<endl;}
-  
+  {cout <<"계좌가 없어서 입금할 수 없습니다."<<endl;
  }
-
  void mgm_withdrow(const int id,const double money) //출금 ->계좌번호와 출금액을 인자값으로 받는다.
                                                                              //인자값인 id와 money 수정 불필요
  {
@@ -260,38 +224,17 @@ public:
   {cout <<"계좌가 없어서 입금할 수 없습니다."<<endl;}
   
  }
- 
-
- 
-
- 
-
 };
-
 void main()
 {
  AccManagement object; //계좌를 관리하는 컨트롤클래스 생성
  object.make(new Account("김성훈",1000)); //일반계좌생성
  object.make(new Credit("김성훈1",1000)); //신용계좌생성
  object.make(new Donation("김성훈2",1000)); //기부계좌생성
- 
-
-
  object.printall(); // 모든 계좌 출력
-
-
  cout<<" =========계좌별 각각 같은 금액을 입금했을때======="<< endl <<endl ;
- 
  object.mgm_deposit(1000000,1000); //일반계좌 더할때 
  object.mgm_deposit(1000001,1000); //신용계좌 더할때
  object.mgm_deposit(1000002,1000); //기부계좌 더할때
- 
-
-
  object.printall(); // 모든 계좌 출력
- 
- 
 }
-
- 
-
